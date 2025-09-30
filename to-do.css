@@ -1,47 +1,70 @@
-<style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            padding: 20px;
-        }
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto; /* középre rakja a tartalmat nagy képernyőn */
+}
 
-        h1 {
-            text-align: center;
-        }
+h1 { 
+  text-align: center; 
+}
 
-        #todo-form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+#todo-form { 
+  display: flex; 
+  gap: 10px; 
+  margin-bottom: 20px; 
+}
 
-        input {
-            flex: 1;
-            padding: 8px;
-        }
+input { 
+  flex: 1; 
+  padding: 10px; 
+  font-size: 1rem;
+}
 
-        button {
-            padding: 8px 12px;
-            cursor: pointer;
-        }
+button { 
+  padding: 10px 15px; 
+  cursor: pointer; 
+  font-size: 1rem;
+}
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+ul { 
+  list-style: none; 
+  padding: 0; 
+}
 
-        li {
-            background: white;
-            margin: 5px 0;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 5px;
-        }
+li {
+  background: white;
+  margin: 5px 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  flex-wrap: wrap; /* ha kevés a hely, a gombok le tudnak törni új sorba */
+}
 
-        li.done {
-            text-decoration: line-through;
-            color: gray;
-        }
-    </style>
+li.done { 
+  text-decoration: line-through; 
+  color: gray; 
+}
+
+/* 📱 Mobil nézet (max 500px széles képernyőn) */
+@media (max-width: 500px) {
+  #todo-form {
+    flex-direction: column; /* input és gomb egymás alá kerül */
+  }
+
+  button {
+    width: 100%; /* gomb teljes szélességű lesz */
+  }
+
+  li {
+    flex-direction: column; /* a szöveg és a gombok egymás alatt lesznek */
+    align-items: flex-start;
+  }
+
+  li button {
+    margin-top: 5px;
+  }
+}
