@@ -1,33 +1,89 @@
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- fontos! -->
-  <title>To-do-list</title>
-  <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-    rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>To-do-list</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
-  <div class="container py-4">
-    <h1 class="text-center mb-4">To-do-list</h1>
+    <div class="container py-4">
+        <h1 class="text-center mb-4">To-do-list</h1>
 
-    <!-- Form (row szükséges!!) -->
-    <form id="todo-form" class="row g-2 mb-3">
-      <div class="col-10 col-md-9 mx-auto">
-        <input type="text" id="todo-input" class="form-control" 
-               placeholder="Write here task name..." required>
-      </div>
-      <div class="col-10 col-md-3 d-grid mx-auto">
-        <button type="submit" class="btn btn-primary">Add</button>
-      </div>
-    </form>
+        <!-- Form -->
+        <form id="todo-form" class="row g-2 mb-3">
+            <div class="col-10 col-md-9 mx-auto">
+                <input type="text" id="todo-input" class="form-control" placeholder="Write here task name..." required>
+            </div>
+            <div class="col-10 col-md-3 d-grid mx-auto">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
 
-    <!-- Lista -->
-    <ul id="todo-list" class="list-group"></ul>
-  </div>
+        <!-- Lista -->
+        <ul id="todo-list" class="list-group"></ul>
+    </div>
 
-  <script src="to-do.js"></script>
+    <script>
+        const form = document.getElementById("todo-form");
+        const input = document.getElementById("todo-input");
+        const list = document.getElementById("todo-list");
+
+        let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+        function render() {
+            list.innerHTML = "";
+            todos.forEach((todo, index) => {
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+
+                const text = document.createElement("span");
+                text.className = "flex-grow-1 me-2";
+                text.textContent = todo.text;
+                if (todo.done) text.classList.add("text-decoration-line-through", "text-muted");
+
+                const doneBtn = document.createElement("button");
+                doneBtn.className = "btn btn-success btn-sm me-1";
+                doneBtn.textContent = "✓";
+                doneBtn.onclick = () => {
+                    todos[index].done = !todos[index].done;
+                    saveAndRender();
+                };
+
+                const delBtn = document.createElement("button");
+                delBtn.className = "btn btn-danger btn-sm";
+                delBtn.textContent = "✗";
+                delBtn.onclick = () => {
+                    todos.splice(index, 1);
+                    saveAndRender();
+                };
+
+                li.appendChild(text);
+                li.appendChild(doneBtn);
+                li.appendChild(delBtn);
+                list.appendChild(li);
+            });
+        }
+
+        function saveAndRender() {
+            localStorage.setItem("todos", JSON.stringify(todos));
+            render();
+        }
+
+        form.addEventListener("submit", e => {
+            e.preventDefault();
+            const value = input.value.trim();
+            if (!value) return;
+            todos.push({ text: value, done: false });
+            input.value = "";
+            saveAndRender();
+        });
+
+        render();
+    </script>
 </body>
+
 </html>
